@@ -1,5 +1,3 @@
-const appConfig = require('./application-config')
-const path = require('path')
 const version = require('../package.json').version
 
 function appName () {
@@ -12,11 +10,6 @@ function appVersion () {
 
 function appWindowTitle () {
   return `${appName()} (${appVersion()})`
-}
-
-function appIcon () {
-  // TODO Add .ico file for windows
-  return path.join(__dirname, '..', 'images', 'deltachat.png')
 }
 
 function homePageUrl () {
@@ -50,14 +43,6 @@ function windowDefaults () {
   }
 }
 
-function getConfigPath () {
-  return path.dirname(appConfig.filePath)
-}
-
-function getLogsPath () {
-  return path.join(getConfigPath(), 'logs')
-}
-
 module.exports = {
   appName,
   appVersion,
@@ -67,7 +52,5 @@ module.exports = {
   gitHubUrl,
   gitHubIssuesUrl,
   gitHubLicenseUrl,
-  windowDefaults,
-  getConfigPath,
-  getLogsPath
+  windowDefaults
 }

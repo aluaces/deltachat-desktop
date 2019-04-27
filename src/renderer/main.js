@@ -11,10 +11,11 @@ const localize = require('../localize')
 const moment = require('moment')
 const App = require('./App')
 const logger = require('../logger')
+const State = require('./state')
 
 const STATE_WRAPPER = {}
-const state = STATE_WRAPPER.state = remote.app.state
 
+var state = State.load()
 setupLocaleData(state.saved.locale)
 
 const app = ReactDOM.render(

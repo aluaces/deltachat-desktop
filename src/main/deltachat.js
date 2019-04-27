@@ -1,8 +1,7 @@
-const DeltaChat = require('deltachat-node')
-const C = require('deltachat-node/constants')
-const EventEmitter = require('events').EventEmitter
 const path = require('path')
+const EventEmitter = require('events').EventEmitter
 const log = require('../logger').getLogger('main/deltachat')
+const DeltaChatWrapper = require('./deltachat-wrapper.js')
 
 const PAGE_SIZE = 20
 
@@ -38,7 +37,7 @@ class DeltaChatController extends EventEmitter {
     // Creates a separate DB file for each login
     const cwd = this.getPath(credentials.addr)
     log.info(`Using deltachat instance ${cwd}`)
-    this._dc = new DeltaChat()
+    this._dc = new DeltaChatWrapper()
     const dc = this._dc
     this.credentials = credentials
     this._render = render

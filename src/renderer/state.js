@@ -1,6 +1,5 @@
-const appConfig = require('../application-config')
 const { EventEmitter } = require('events')
-const log = require('../logger').getLogger('main/state')
+const log = require('../logger').getLogger('renderer/state')
 
 const SAVE_DEBOUNCE_INTERVAL = 1000
 
@@ -17,6 +16,17 @@ const State = module.exports = Object.assign(new EventEmitter(), {
   },
   saveImmediate
 })
+
+var appConfig = {
+  read: function () {
+    var config = localStorage.getItem('config')
+    return JSON.parse(config)
+  },
+  write: function (config) {
+    var data = JSON.stringify(config)
+    localStorage.setItem('config', data)
+  }
+}
 
 function getDefaultState () {
   return {
@@ -44,23 +54,22 @@ function getDefaultState () {
 }
 
 function load (cb) {
-  appConfig.read(function (err, saved) {
-    if (err) {
-      log.info('Missing configuration file. Using default values.')
-    }
-    const state = getDefaultState()
-    state.saved = Object.assign(state.saved, err ? {} : saved)
-    cb(null, state)
-  })
+  try {
+    var saved = appConfig.read()
+  catch (err) {
+    log.info('Missing configuration file. Using default values.', err)
+  }
+  const state = getDefaultState()
+  state.saved = Object.assign(state.saved, err ? {} : saved)
+  return state
 }
 
 function saveImmediate (state, cb) {
-  log.info(`Saving state to ${appConfig.filePath}`)
+  log.info(`Saving state to localStorage`)
   const copy = Object.assign({}, state.saved)
-  appConfig.write(copy, err => {
-    if (err) {
-      log.error('State save failed', err)
-    }
-    cb && cb(err)
-  })
+  try {
+    appConfig.write(copy)
+  } catch (err) {
+    log.info('Got error saving state', err)
+  }
 }

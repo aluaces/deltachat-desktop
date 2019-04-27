@@ -1,8 +1,7 @@
 const esp = require('error-stack-parser')
-const { app, remote } = require('electron')
 
-const rc = remote ? remote.app.rc : app ? app.rc : {}
-
+const logToConsole = true
+const logDebug = true
 const LoggerVariants = [
   { log: console.debug, level: 'DEBUG' },
   { log: console.info, level: 'INFO' },
@@ -25,7 +24,7 @@ function log (channel, level, ...args) {
     throw Error('Failed to log message - Handler not initilized yet')
   }
   handler(channel, variant.level, ...args)
-  if (rc['log-to-console']) {
+  if (logToConsole) {
     variant.log(channel, variant.level, ...args)
   }
 }
@@ -41,7 +40,7 @@ class Logger {
   }
 
   debug (...args) {
-    if (!rc['log-debug']) return
+    if (logDebug) return
     log(this.channel, 0, [], ...args)
   }
 
