@@ -5,7 +5,6 @@ const styled = require('styled-components').default
 const Composer = require('./Composer')
 const MessageWrapper = require('./MessageWrapper')
 const { ConversationContext } = require('./conversations')
-const StyleVariables = require('./style-variables')
 const log = require('../../logger').getLogger('renderer/chatView')
 
 const MutationObserver = window.MutationObserver
@@ -42,11 +41,11 @@ const ChatViewWrapper = styled.div`
   }
 
   .module-message__container--incoming {
-    background-color: ${StyleVariables.colors.deltaChatMessageBubbleOther};
+    background-color: ${props => props.theme.deltaChatMessageBubbleOther};
   }
 
   .module-message__container--outgoing {
-    background-color: ${StyleVariables.colors.deltaChatMessageBubbleSelf};
+    background-color: ${props => props.theme.deltaChatMessageBubbleSelf};
 
     &, & .module-message__attachment-container {
       border-radius: 16px 16px 1px 16px;
@@ -68,11 +67,11 @@ const ChatViewWrapper = styled.div`
   }
 
   .module-message__author, .module-message__text {
-    color: ${StyleVariables.colors.deltaChatPrimaryFg};
+    color: ${props => props.theme.deltaChatPrimaryFg};
   }
 
   .module-message__metadata__date--incoming {
-    color: ${StyleVariables.colors.deltaChatPrimaryFgLight};
+    color: ${props => props.theme.deltaChatPrimaryFgLight};
   }
 }
 `
